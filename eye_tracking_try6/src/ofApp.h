@@ -35,9 +35,19 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
         void detectAndDisplay( cv::Mat frame, cv::Mat& outFrame);
         cv::Mat findEyes(cv::Mat frame_gray, cv::Rect face);
-        void calculateWeight();
+    
+    void calculateWeight();
+    int BinarySearch(float pt, vector<float>& ls);
+    void countGrid(ofVec2f& pt);
+    vector<vector<long>> counterVec;
+    
+        int n_hGrid;
+        int n_vGrid;
+        vector<float> hGrid;
+        vector<float> vGrid;
         ofxLeastSquares ls;
-        bool bBeenFit;
+    
+    bool bBeenFit;
         void callibrate();
         bool isCallibrating;
     
@@ -46,11 +56,13 @@ class ofApp : public ofBaseApp{
         int counter;
         ofVec2f Dot[20];
         bool firstRun[21];
+    
     int inputCount;
     int outputCount;
         vector<float> makeInput(float x, float y);
         vector<float> makeOutput(float x, float y);
     ofVec2f getCalibratedPoint(float x, float y);
+    ofVec2f ptAfterMap;
     vector <ofPoint> trackedPoints;// Points BEFORE mapping
     vector <ofPoint> knownPoints; // This vector consists of points AFTER mapping
         //void drawResult();
@@ -89,10 +101,30 @@ class ofApp : public ofBaseApp{
     ofImage screenshot;
     bool startRead;
     
+    //for text drawing
     ofTrueTypeFont georgia;
+    ofTrueTypeFont originalFont;
+    ofTrueTypeFont newFont;
+    string str;
+    vector<string> splitStr;
+    ofImage long_article;
+
+    int linelength;
+    int lineIndex;
+    
     int levelMark;
     
     float callibrationTimer;
     float stareTime;
+    float r;
+    
+    ofImage printImg;
+    
+    float readTimer;
+    float imageY;
+    
+    vector <vector<long>> noFocusGrids;
+    float timeFactor;
+    float timeFactorX;
     
 };
