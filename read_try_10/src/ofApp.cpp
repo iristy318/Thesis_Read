@@ -349,7 +349,7 @@ void ofApp::setup(){
     MA_window = 2/(1-smoothRate);
     
     //for text drawing----------------------------------
-    long_article.load("images/article_final_450.png");
+    long_article.load("images/article_final_1080.png");
     georgia.load("Georgia.ttf", 18);
     georgia.setLineHeight(30.0f);
     georgia.setLetterSpacing(1.037);
@@ -361,8 +361,8 @@ void ofApp::setup(){
     lineIndex = 1;
     
     //for callibration--------------------------------------------
-    stareTime = 0.5;
-    r = 10;
+    stareTime = 0.1;
+    r = 15;
     isCallibrating = false;
     
     Dot[0] = ofVec2f(ofGetWindowWidth()/5*1, ofGetWindowHeight()/6);
@@ -681,9 +681,12 @@ void ofApp::draw(){
         else{
             if(!isshowResultCalled){
                 showResult();
-                screenshot.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
-                screenshot.save("printscreen.png");
-                printResult();
+                for (int i = 0; i < 16; i++){
+                    screenshot.grabScreen(0, 120*i , 1080, 120);
+                    screenshot.resize(540, 60);
+                    screenshot.setImageType(OF_IMAGE_GRAYSCALE);
+                    printResult(screenshot);
+                }
             }
             else{
                 long_article.draw(0, 0);
@@ -726,7 +729,7 @@ void ofApp::keyPressed(int key){
     
     //save screenshot
     if(key == 's'){
-        screenshot.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
+        screenshot.grabScreen(0, 0 , 450, 800);
         screenshot.save("screenshot" + ofGetTimestampString() + ".png");
         startFlag = 0;
     }
@@ -860,13 +863,13 @@ void ofApp::showResult(){
     for (int i = 0; i < vGrid.size()-1; i++) {
         for (int j = 0; j < hGrid.size()-1; j++)
             totalCount += counterVec[i][j];
-//        cout<<"total count: " <<totalCount<< endl;
+        cout<<"total count: " <<totalCount<< endl;
     }
     
     float density;
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(0.0,1.2);
-    timeFactorX = (totalCount - 10000)/1000;
+    timeFactorX = (totalCount - 400)/100;
     timeFactor = 1/(1 + expf(-timeFactorX));
     
     //draw grids on nofocusgrids
@@ -886,9 +889,9 @@ void ofApp::showResult(){
     isshowResultCalled = true;
 }
 
-void ofApp::printResult(){
-    ofPixels pixels;
-    ofLoadImage(pixels, "printscreen.png");
+void ofApp::printResult(ofImage& pixels){
+//    ofPixels pixels;
+//    ofLoadImage(pixels, "printscreen.png");
     
     printer.printImage(pixels, OF_ALIGN_HORZ_CENTER);
     printer.flush();

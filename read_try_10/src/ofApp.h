@@ -138,7 +138,7 @@ class ofApp : public ofBaseApp{
     void showResult();
     bool isshowResultCalled;
     
-    void printResult();
+    void printResult(ofImage& pixels);
     bool isprintResultCalled;
     
     ofImage currentScreenshot;
